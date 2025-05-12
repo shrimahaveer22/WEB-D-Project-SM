@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<style>
+    :root {
+        --primary: #3e7a3e;         
+        --secondary: #4a90bf;      
+        --background: #181c24;     
+        --accent: #f7c873;         
+        --text: #eaf6fb;           
+        --shadow: 0 8px 32px rgba(74, 144, 191, 0.18); 
+        --neon-glow: 0 0 18px rgba(74, 144, 191, 0.35); 
+        --radius: 24px;             
+        --spacing: 36px;                  
+        --background: #23281d;      
+        --accent: #e2d9b7;          
+        --text: #f5f6fa;
+        --shadow: 0 4px 24px rgba(62, 122, 62, 0.18);
+        --neon-glow: 0 0 15px rgba(191, 161, 74, 0.3);
+    }
+
+    body {
+        font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        padding: 30px 0;
+        background: linear-gradient(135deg, var(--background) 60%, #1a1e14 100%);
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 32px;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .block {
+        background: rgba(35, 40, 29, 0.97);
+        padding: 28px 22px 22px 22px;
+        border-radius: 18px;
+        border: 2.5px solid var(--primary);
+        box-shadow: var(--shadow);
+        transition: transform 0.18s, box-shadow 0.18s;
+        position: relative;
+    }
+
+    .block:hover {
+        transform: translateY(-7px) scale(1.025);
+        box-shadow: 0 8px 32px rgba(191, 161, 74, 0.18);
+        border-color: var(--secondary);
+    }
+
+    h2 {
+        color: var(--secondary);
+        margin: 0 0 18px 0;
+        font-size: 1.3em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        border-left: 6px solid var(--primary);
+        padding-left: 14px;
+        text-shadow: 0 2px 8px rgba(62,122,62,0.18);
+    }
+
+    input, button {
+        padding: 11px 16px;
+        margin: 7px 0;
+        border: none;
+        border-radius: 7px;
+        background: rgba(191, 161, 74, 0.08);
+        color: var(--text);
+        font-size: 15px;
+        outline: none;
+        border: 1.5px solid transparent;
+        transition: border 0.2s, background 0.2s;
+    }
+
+    input:focus, button:focus {
+        border: 1.5px solid var(--primary);
+        background: rgba(62, 122, 62, 0.09);
+    }
+
+    button {
+        background: linear-gradient(90deg, var(--primary) 60%, var(--secondary) 100%);
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-size: 13px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(191,161,74,0.08);
+        margin-right: 8px;
+    }
+
+    button:hover {
+        background: linear-gradient(90deg, var(--secondary) 60%, var(--primary) 100%);
+        color: var(--accent);
+        border-color: var(--accent);
+        box-shadow: 0 4px 18px rgba(226,217,183,0.13);
+    }
+
+    .circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: var(--secondary);
+        cursor: pointer;
+        transition: transform 0.22s, box-shadow 0.22s;
+        border: 3px solid var(--accent);
+        box-shadow: 0 0 0 0 var(--primary);
+        margin-bottom: 10px;
+    }
+
+    .circle:hover {
+        transform: scale(1.13) rotate(-10deg);
+        box-shadow: 0 0 24px 4px var(--secondary);
+        border-color: var(--primary);
+    }
+
+    #calculator {
+        background: rgba(62, 122, 62, 0.13);
+        padding: 24px 18px;
+        border-radius: 20px;
+        grid-column: span 2;
+        border: 2.5px solid var(--secondary);
+        box-shadow: 0 6px 32px rgba(191,161,74,0.10);
+    }
+
+    .calc-display {
+        background: rgba(226,217,183,0.08);
+        color: var(--secondary);
+        font-size: 1.7em;
+        border-radius: 8px;
+        width: 100%;
+        padding: 13px 10px;
+        margin-bottom: 13px;
+        border: 1.5px solid var(--primary);
+        font-family: 'Consolas', 'Courier New', monospace;
+        letter-spacing: 1px;
+    }
+
+    .calc-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    #calculator button {
+        background: rgba(191, 161, 74, 0.07);
+        padding: 15px 0;
+        font-size: 1.15em;
+        border: 1.5px solid rgba(62,122,62,0.13);
+        color: var(--text);
+        border-radius: 7px;
+        transition: background 0.18s, color 0.18s;
+    }
+
+    #calculator button:hover {
+        background: var(--primary);
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+
+    .color-preview {
+        width: 54px;
+        height: 54px;
+        border: 3px solid var(--secondary);
+        box-shadow: 0 0 16px 2px var(--primary);
+        border-radius: 10px;
+        margin-top: 10px;
+        margin-bottom: 8px;
+    }
+
+    input[type="range"] {
+        appearance: none;
+        -webkit-appearance: none;
+        height: 9px;
+        background: linear-gradient(90deg, var(--primary) 60%, var(--secondary) 100%);
+        border-radius: 5px;
+        margin-right: 8px;
+        outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--secondary);
+        cursor: pointer;
+        border: 2.5px solid var(--primary);
+        box-shadow: 0 2px 8px rgba(226,217,183,0.18);
+    }
+    input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--secondary);
+        cursor: pointer;
+        border: 2.5px solid var(--primary);
+        box-shadow: 0 2px 8px rgba(226,217,183,0.18);
+    }
+    input[type="range"]::-ms-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--secondary);
+        cursor: pointer;
+        border: 2.5px solid var(--primary);
+        box-shadow: 0 2px 8px rgba(226,217,183,0.18);
+    }
+
+    @media (max-width: 1200px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        #calculator {
+            grid-column: span 2;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+        #calculator {
+            grid-column: span 1;
+        }
+    }
+</style>
+</head>
+<body>
+       <div class="grid">
+        <div class="block">
+            <h2>Color Tools</h2>
+            <div class="circle" onclick="changeColor(this)" style="background-color: var(--secondary)" data-color-index="0"></div>
+        </div>
+
+        <!-- Color Mixer -->
+        <div class="block">
+            <h2>Color Mixer</h2>
+            <div class="color-mixer">
+                <div>
+                    <input type="range" id="red" min="0" max="255" value="128">
+                    <label for="red">Red</label>
+                </div>
+                <div>
+                    <input type="range" id="green" min="0" max="255" value="128">
+                    <label for="green">Green</label>
+                </div>
+                <div>
+                    <input type="range" id="blue" min="0" max="255" value="128">
+                    <label for="blue">Blue</label>
+                </div>
+                <div class="color-preview" id="colorPreview"></div>
+            </div>
+            <div class="color-name" id="colorName"></div>
+
+        </div>
+
+        <!-- Math Operations -->
+        <div class="block">
+            <h2>Math Tools</h2>
+            <input type="number" id="num1" placeholder="Number 1">
+            <input type="number" id="num2" placeholder="Number 2">
+            <button onclick="performOperation('add')">Add</button>
+            <button onclick="performOperation('multiply')">Multiply</button>
+            <p id="mathResult"></p>
+        </div>
+
+        
+        <div class="block">
+            <h2>Number Checkers</h2>
+            <input type="number" id="evenOddInput" placeholder="Check Even/Odd">
+            <button onclick="checkEvenOdd()">Check</button>
+            <p id="evenOddResult"></p>
+            
+            <input type="number" id="primeInput" placeholder="Find Primes" style="margin-top: 15px;">
+            <button onclick="showPrimes()">Show Primes</button>
+            <p id="primeResult"></p>
+        </div>
+
+        <!-- Age & Grade -->
+        <div class="block">
+            <h2>Age & Grade</h2>
+            <input type="number" id="ageInput" placeholder="Check Voting Age">
+            <button onclick="checkVotingAge()">Check</button>
+            <p id="votingResult"></p>
+            
+            <input type="number" id="marksInput" placeholder="Calculate Grade" style="margin-top: 15px;">
+            <button onclick="calculateGrade()">Calculate</button>
+            <p id="gradeResult"></p>
+        </div>
+
+        
+        <div class="block">
+            <h2>Interaction Counters</h2>
+            <button class="counter-btn" id="counterButton">
+                Interact Here
+            </button>
+            <p>Clicks: <span id="clickCount">0</span></p>
+            <p>Double Clicks: <span id="dblClickCount">0</span></p>
+            <p>Hovers: <span id="hoverCount">0</span></p>
+        </div>
+
+        
+        <div class="block">
+            <h2>Registration Form</h2>
+            <form id="regForm" onsubmit="return handleFormSubmit(event)">
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="tel" placeholder="Contact" required>
+                <input type="number" placeholder="Roll No" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        
+        <div class="block">
+            <h2>Quick Actions</h2>
+            <button onclick="alert('Button 1 Alert!')">Alert 1</button>
+            <button onclick="alert('Button 2 Alert!')">Alert 2</button>
+        </div>
+
+        
+        <div class="block" id="calculator">
+            <h2>Calculator</h2>
+            <input type="text" class="calc-display" id="display" readonly>
+            <div class="calc-buttons">
+                <button onclick="appendToDisplay('7')">7</button>
+                <button onclick="appendToDisplay('8')">8</button>
+                <button onclick="appendToDisplay('9')">9</button>
+                <button onclick="appendToDisplay('+')">+</button>
+                <button onclick="appendToDisplay('4')">4</button>
+                <button onclick="appendToDisplay('5')">5</button>
+                <button onclick="appendToDisplay('6')">6</button>
+                <button onclick="appendToDisplay('-')">-</button>
+                <button onclick="appendToDisplay('1')">1</button>
+                <button onclick="appendToDisplay('2')">2</button>
+                <button onclick="appendToDisplay('3')">3</button>
+                <button onclick="appendToDisplay('*')">×</button>
+                <button onclick="appendToDisplay('0')">0</button>
+                <button onclick="appendToDisplay('.')">.</button>
+                <button onclick="calculate()">=</button>
+                <button onclick="appendToDisplay('/')">/</button>
+                <button onclick="clearDisplay()">C</button>
+                <button onclick="appendToDisplay('(')">(</button>
+                <button onclick="appendToDisplay(')')">)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function performOperation(operation) {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            let result;
+            if(operation === 'add') result = num1 + num2;
+            else result = num1 * num2;
+            document.getElementById('mathResult').textContent = 'Result: ' + result;
+        }
+
+        
+        function checkEvenOdd() {
+            const number = parseInt(document.getElementById('evenOddInput').value);
+            document.getElementById('evenOddResult').textContent = 
+                number % 2 === 0 ? "Even" : "Odd";
+        }
+
+        
+        function checkVotingAge() {
+            const age = parseInt(document.getElementById('ageInput').value);
+            document.getElementById('votingResult').textContent = 
+                age >= 18 ? "Eligible to vote" : "Not eligible to vote";
+        }
+
+        function isPrime(num) {
+            for(let i = 2; i <= Math.sqrt(num); i++) {
+                if(num % i === 0) return false;
+            }
+            return num > 1;
+        }
+
+        function showPrimes() {
+            const limit = parseInt(document.getElementById('primeInput').value);
+            let primes = [];
+            for(let i = 2; i <= limit; i++) {
+                if(isPrime(i)) primes.push(i);
+            }
+            document.getElementById('primeResult').textContent = primes.join(', ');
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert('Form submitted successfully!');
+            event.target.reset();
+        }
+
+        const colors = ['#E76F51', '#2A9D8F', '#E9C46A'];
+        function changeColor(circle) {
+            const currentIndex = parseInt(circle.getAttribute('data-color-index')) || 0;
+            const newIndex = (currentIndex + 1) % colors.length;
+            circle.style.backgroundColor = colors[newIndex];
+            circle.setAttribute('data-color-index', newIndex);
+        }
+
+        // Grade Calculator
+        function calculateGrade() {
+            const marks = parseInt(document.getElementById('marksInput').value);
+            let grade;
+            if(marks >= 75) grade = 'A+';
+            else if(marks >= 70) grade = 'A';
+            else if(marks >= 65) grade = 'A-';
+            else if(marks >= 60) grade = 'B+';
+            else if(marks >= 55) grade = 'B';
+            else if(marks >= 50) grade = 'B-';
+            else if(marks >= 45) grade = 'C+';
+            else if(marks >= 40) grade = 'C';
+            else if(marks >= 35) grade = 'C-';
+            else if(marks >= 30) grade = 'D';
+            else grade = 'F';
+            document.getElementById('gradeResult').textContent = 'Grade: ' + grade;
+        }
+
+        let clickCount = 0, dblClickCount = 0, hoverCount = 0;
+        const counterButton = document.getElementById('counterButton');
+        
+        counterButton.addEventListener('click', () => {
+            document.getElementById('clickCount').textContent = ++clickCount;
+        });
+        
+        counterButton.addEventListener('dblclick', () => {
+            document.getElementById('dblClickCount').textContent = ++dblClickCount;
+        });
+        
+        counterButton.addEventListener('mouseover', () => {
+            document.getElementById('hoverCount').textContent = ++hoverCount;
+        });
+
+        const colorInputs = document.querySelectorAll('.color-mixer input');
+        const colorPreview = document.getElementById('colorPreview');
+        function updateColor() {
+            const r = document.getElementById('red').value;
+            const g = document.getElementById('green').value;
+            const b = document.getElementById('blue').value;
+            const color = `rgb(${r}, ${g}, ${b})`;
+            colorPreview.style.backgroundColor = color;
+            document.getElementById('colorName').textContent = color;
+        }
+        colorInputs.forEach(input => input.addEventListener('input', updateColor));
+        updateColor();
+
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculate() {
+            try {
+                const result = eval(document.getElementById('display').value);
+                document.getElementById('display').value = result;
+            } catch {
+                alert('Invalid calculation');
+                clearDisplay();
+            }
+        }
+    </script>
+</body>
+</html>
